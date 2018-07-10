@@ -1,0 +1,366 @@
+
+-- --------------------------------------------------
+-- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
+-- --------------------------------------------------
+-- Date Created: 07/10/2018 08:29:06
+-- Generated from EDMX file: C:\Users\dsantos3\Desktop\MelhorPreco\MelhorPreco\MelhorPreco.DATA\Model1.edmx
+-- --------------------------------------------------
+
+SET QUOTED_IDENTIFIER OFF;
+GO
+USE [DB_MELHOR_PRECO];
+GO
+IF SCHEMA_ID(N'dbo') IS NULL EXECUTE(N'CREATE SCHEMA [dbo]');
+GO
+
+-- --------------------------------------------------
+-- Dropping existing FOREIGN KEY constraints
+-- --------------------------------------------------
+
+IF OBJECT_ID(N'[dbo].[FK_TB_LISTA_COMPRAS_TB_PRODUTO]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[TB_LISTA_COMPRAS] DROP CONSTRAINT [FK_TB_LISTA_COMPRAS_TB_PRODUTO];
+GO
+IF OBJECT_ID(N'[dbo].[FK_TB_LISTA_COMPRAS_TB_USUARIO]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[TB_LISTA_COMPRAS] DROP CONSTRAINT [FK_TB_LISTA_COMPRAS_TB_USUARIO];
+GO
+IF OBJECT_ID(N'[dbo].[FK_TB_LOJA_TB_ENDERECO]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[TB_LOJA] DROP CONSTRAINT [FK_TB_LOJA_TB_ENDERECO];
+GO
+IF OBJECT_ID(N'[dbo].[FK_TB_PRECO_PRODUTO]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[TB_PRECO] DROP CONSTRAINT [FK_TB_PRECO_PRODUTO];
+GO
+IF OBJECT_ID(N'[dbo].[FK_TB_PRECO_TB_LOJA]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[TB_PRECO] DROP CONSTRAINT [FK_TB_PRECO_TB_LOJA];
+GO
+IF OBJECT_ID(N'[dbo].[FK_TB_PRECO_TB_USUARIO]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[TB_PRECO] DROP CONSTRAINT [FK_TB_PRECO_TB_USUARIO];
+GO
+IF OBJECT_ID(N'[dbo].[FK_TB_PREFERENCIA_TB_LOJA]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[TB_PREFERENCIA] DROP CONSTRAINT [FK_TB_PREFERENCIA_TB_LOJA];
+GO
+IF OBJECT_ID(N'[dbo].[FK_TB_PREFERENCIA_TB_USUARIO]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[TB_PREFERENCIA] DROP CONSTRAINT [FK_TB_PREFERENCIA_TB_USUARIO];
+GO
+IF OBJECT_ID(N'[dbo].[FK_TB_USUARIO_TB_ENDERECO]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[TB_USUARIO] DROP CONSTRAINT [FK_TB_USUARIO_TB_ENDERECO];
+GO
+IF OBJECT_ID(N'[dbo].[FK_TB_USUARIO_TB_PERFIL]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[TB_USUARIO] DROP CONSTRAINT [FK_TB_USUARIO_TB_PERFIL];
+GO
+
+-- --------------------------------------------------
+-- Dropping existing tables
+-- --------------------------------------------------
+
+IF OBJECT_ID(N'[dbo].[TB_ENDERECO]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[TB_ENDERECO];
+GO
+IF OBJECT_ID(N'[dbo].[TB_LISTA_COMPRAS]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[TB_LISTA_COMPRAS];
+GO
+IF OBJECT_ID(N'[dbo].[TB_LOJA]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[TB_LOJA];
+GO
+IF OBJECT_ID(N'[dbo].[TB_PERFIL]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[TB_PERFIL];
+GO
+IF OBJECT_ID(N'[dbo].[TB_PRECO]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[TB_PRECO];
+GO
+IF OBJECT_ID(N'[dbo].[TB_PREFERENCIA]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[TB_PREFERENCIA];
+GO
+IF OBJECT_ID(N'[dbo].[TB_PRODUTO]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[TB_PRODUTO];
+GO
+IF OBJECT_ID(N'[dbo].[TB_USUARIO]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[TB_USUARIO];
+GO
+
+-- --------------------------------------------------
+-- Creating all tables
+-- --------------------------------------------------
+
+-- Creating table 'TB_ENDERECO'
+CREATE TABLE [dbo].[TB_ENDERECO] (
+    [ENDERECO_CEP] int  NOT NULL,
+    [ENDERECO_DESCRICAO] nchar(150)  NULL,
+    [ENDERECO_BAIRRO] nchar(150)  NULL,
+    [ENDERECO_CIDADE] nchar(50)  NULL,
+    [ENDERECO_ESTADO] nchar(2)  NULL
+);
+GO
+
+-- Creating table 'TB_LISTA_COMPRAS'
+CREATE TABLE [dbo].[TB_LISTA_COMPRAS] (
+    [LISTA_ID] int IDENTITY(1,1) NOT NULL,
+    [LISTA_USUARIO] int  NOT NULL,
+    [LISTA_PRODUTO] bigint  NOT NULL
+);
+GO
+
+-- Creating table 'TB_LOJA'
+CREATE TABLE [dbo].[TB_LOJA] (
+    [LOJA_ID] int IDENTITY(1,1) NOT NULL,
+    [LOJA_NOME] nchar(50)  NOT NULL,
+    [LOJA_CNPJ] nchar(14)  NULL,
+    [LOJA_FONE] nchar(10)  NULL,
+    [LOJA_END_CEP] int  NOT NULL,
+    [LOJA_END_NUMERO] int  NULL,
+    [LOJA_END_COMPLEMENTO] nchar(50)  NULL
+);
+GO
+
+-- Creating table 'TB_PRECO'
+CREATE TABLE [dbo].[TB_PRECO] (
+    [PRECO_PRODUTO] bigint  NOT NULL,
+    [PRECO_LOJA] int  NOT NULL,
+    [PRECO_VALOR] decimal(10,2)  NOT NULL,
+    [PRECO_ATUALIZACAO] datetime  NOT NULL,
+    [PRECO_USUARIO_ATUALIZOU] int  NOT NULL
+);
+GO
+
+-- Creating table 'TB_PREFERENCIA'
+CREATE TABLE [dbo].[TB_PREFERENCIA] (
+    [PREFERENCIA_ID] int IDENTITY(1,1) NOT NULL,
+    [PREFERENCIA_USUARIO] int  NOT NULL,
+    [PREFERENCIA_LOJA] int  NOT NULL
+);
+GO
+
+-- Creating table 'TB_PRODUTO'
+CREATE TABLE [dbo].[TB_PRODUTO] (
+    [PRODUTO_EAN] bigint  NOT NULL,
+    [PRODUTO_DESCRICAO] nchar(50)  NOT NULL,
+    [PRODUTO_IMAGEM] bigint  NULL,
+    [PRODUTO_CATEGORIA] nchar(50)  NULL,
+    [PRODUTO_SUBCATEGORIA] nchar(50)  NULL
+);
+GO
+
+-- Creating table 'TB_USUARIO'
+CREATE TABLE [dbo].[TB_USUARIO] (
+    [USUARIO_ID] int IDENTITY(1,1) NOT NULL,
+    [USUARIO_NOME] nchar(50)  NOT NULL,
+    [USUARIO_EMAIL] nchar(51)  NOT NULL,
+    [USUARIO_SENHA] nchar(10)  NOT NULL,
+    [USUARIO_FONE] nchar(10)  NULL,
+    [USUARIO_CEL] nchar(11)  NULL,
+    [USUARIO_END_CEP] int  NOT NULL,
+    [USUARIO_END_NUMERO] int  NULL,
+    [USUARIO_END_COMPLEMENTO] nchar(50)  NULL,
+    [USUARIO_PERFIL] int  NOT NULL
+);
+GO
+
+-- Creating table 'TB_PERFIL'
+CREATE TABLE [dbo].[TB_PERFIL] (
+    [PERFIL_ID] int IDENTITY(1,1) NOT NULL,
+    [PERFIL_ROLE] nchar(4)  NOT NULL
+);
+GO
+
+-- --------------------------------------------------
+-- Creating all PRIMARY KEY constraints
+-- --------------------------------------------------
+
+-- Creating primary key on [ENDERECO_CEP] in table 'TB_ENDERECO'
+ALTER TABLE [dbo].[TB_ENDERECO]
+ADD CONSTRAINT [PK_TB_ENDERECO]
+    PRIMARY KEY CLUSTERED ([ENDERECO_CEP] ASC);
+GO
+
+-- Creating primary key on [LISTA_ID] in table 'TB_LISTA_COMPRAS'
+ALTER TABLE [dbo].[TB_LISTA_COMPRAS]
+ADD CONSTRAINT [PK_TB_LISTA_COMPRAS]
+    PRIMARY KEY CLUSTERED ([LISTA_ID] ASC);
+GO
+
+-- Creating primary key on [LOJA_ID] in table 'TB_LOJA'
+ALTER TABLE [dbo].[TB_LOJA]
+ADD CONSTRAINT [PK_TB_LOJA]
+    PRIMARY KEY CLUSTERED ([LOJA_ID] ASC);
+GO
+
+-- Creating primary key on [PRECO_PRODUTO] in table 'TB_PRECO'
+ALTER TABLE [dbo].[TB_PRECO]
+ADD CONSTRAINT [PK_TB_PRECO]
+    PRIMARY KEY CLUSTERED ([PRECO_PRODUTO] ASC);
+GO
+
+-- Creating primary key on [PREFERENCIA_ID] in table 'TB_PREFERENCIA'
+ALTER TABLE [dbo].[TB_PREFERENCIA]
+ADD CONSTRAINT [PK_TB_PREFERENCIA]
+    PRIMARY KEY CLUSTERED ([PREFERENCIA_ID] ASC);
+GO
+
+-- Creating primary key on [PRODUTO_EAN] in table 'TB_PRODUTO'
+ALTER TABLE [dbo].[TB_PRODUTO]
+ADD CONSTRAINT [PK_TB_PRODUTO]
+    PRIMARY KEY CLUSTERED ([PRODUTO_EAN] ASC);
+GO
+
+-- Creating primary key on [USUARIO_ID] in table 'TB_USUARIO'
+ALTER TABLE [dbo].[TB_USUARIO]
+ADD CONSTRAINT [PK_TB_USUARIO]
+    PRIMARY KEY CLUSTERED ([USUARIO_ID] ASC);
+GO
+
+-- Creating primary key on [PERFIL_ID] in table 'TB_PERFIL'
+ALTER TABLE [dbo].[TB_PERFIL]
+ADD CONSTRAINT [PK_TB_PERFIL]
+    PRIMARY KEY CLUSTERED ([PERFIL_ID] ASC);
+GO
+
+-- --------------------------------------------------
+-- Creating all FOREIGN KEY constraints
+-- --------------------------------------------------
+
+-- Creating foreign key on [LOJA_END_CEP] in table 'TB_LOJA'
+ALTER TABLE [dbo].[TB_LOJA]
+ADD CONSTRAINT [FK_TB_LOJA_TB_ENDERECO]
+    FOREIGN KEY ([LOJA_END_CEP])
+    REFERENCES [dbo].[TB_ENDERECO]
+        ([ENDERECO_CEP])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_TB_LOJA_TB_ENDERECO'
+CREATE INDEX [IX_FK_TB_LOJA_TB_ENDERECO]
+ON [dbo].[TB_LOJA]
+    ([LOJA_END_CEP]);
+GO
+
+-- Creating foreign key on [USUARIO_END_CEP] in table 'TB_USUARIO'
+ALTER TABLE [dbo].[TB_USUARIO]
+ADD CONSTRAINT [FK_TB_USUARIO_TB_ENDERECO]
+    FOREIGN KEY ([USUARIO_END_CEP])
+    REFERENCES [dbo].[TB_ENDERECO]
+        ([ENDERECO_CEP])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_TB_USUARIO_TB_ENDERECO'
+CREATE INDEX [IX_FK_TB_USUARIO_TB_ENDERECO]
+ON [dbo].[TB_USUARIO]
+    ([USUARIO_END_CEP]);
+GO
+
+-- Creating foreign key on [LISTA_PRODUTO] in table 'TB_LISTA_COMPRAS'
+ALTER TABLE [dbo].[TB_LISTA_COMPRAS]
+ADD CONSTRAINT [FK_TB_LISTA_COMPRAS_TB_PRODUTO]
+    FOREIGN KEY ([LISTA_PRODUTO])
+    REFERENCES [dbo].[TB_PRODUTO]
+        ([PRODUTO_EAN])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_TB_LISTA_COMPRAS_TB_PRODUTO'
+CREATE INDEX [IX_FK_TB_LISTA_COMPRAS_TB_PRODUTO]
+ON [dbo].[TB_LISTA_COMPRAS]
+    ([LISTA_PRODUTO]);
+GO
+
+-- Creating foreign key on [LISTA_USUARIO] in table 'TB_LISTA_COMPRAS'
+ALTER TABLE [dbo].[TB_LISTA_COMPRAS]
+ADD CONSTRAINT [FK_TB_LISTA_COMPRAS_TB_USUARIO]
+    FOREIGN KEY ([LISTA_USUARIO])
+    REFERENCES [dbo].[TB_USUARIO]
+        ([USUARIO_ID])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_TB_LISTA_COMPRAS_TB_USUARIO'
+CREATE INDEX [IX_FK_TB_LISTA_COMPRAS_TB_USUARIO]
+ON [dbo].[TB_LISTA_COMPRAS]
+    ([LISTA_USUARIO]);
+GO
+
+-- Creating foreign key on [PRECO_LOJA] in table 'TB_PRECO'
+ALTER TABLE [dbo].[TB_PRECO]
+ADD CONSTRAINT [FK_TB_PRECO_TB_LOJA]
+    FOREIGN KEY ([PRECO_LOJA])
+    REFERENCES [dbo].[TB_LOJA]
+        ([LOJA_ID])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_TB_PRECO_TB_LOJA'
+CREATE INDEX [IX_FK_TB_PRECO_TB_LOJA]
+ON [dbo].[TB_PRECO]
+    ([PRECO_LOJA]);
+GO
+
+-- Creating foreign key on [PREFERENCIA_LOJA] in table 'TB_PREFERENCIA'
+ALTER TABLE [dbo].[TB_PREFERENCIA]
+ADD CONSTRAINT [FK_TB_PREFERENCIA_TB_LOJA]
+    FOREIGN KEY ([PREFERENCIA_LOJA])
+    REFERENCES [dbo].[TB_LOJA]
+        ([LOJA_ID])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_TB_PREFERENCIA_TB_LOJA'
+CREATE INDEX [IX_FK_TB_PREFERENCIA_TB_LOJA]
+ON [dbo].[TB_PREFERENCIA]
+    ([PREFERENCIA_LOJA]);
+GO
+
+-- Creating foreign key on [PRECO_PRODUTO] in table 'TB_PRECO'
+ALTER TABLE [dbo].[TB_PRECO]
+ADD CONSTRAINT [FK_TB_PRECO_PRODUTO]
+    FOREIGN KEY ([PRECO_PRODUTO])
+    REFERENCES [dbo].[TB_PRODUTO]
+        ([PRODUTO_EAN])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating foreign key on [PRECO_USUARIO_ATUALIZOU] in table 'TB_PRECO'
+ALTER TABLE [dbo].[TB_PRECO]
+ADD CONSTRAINT [FK_TB_PRECO_TB_USUARIO]
+    FOREIGN KEY ([PRECO_USUARIO_ATUALIZOU])
+    REFERENCES [dbo].[TB_USUARIO]
+        ([USUARIO_ID])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_TB_PRECO_TB_USUARIO'
+CREATE INDEX [IX_FK_TB_PRECO_TB_USUARIO]
+ON [dbo].[TB_PRECO]
+    ([PRECO_USUARIO_ATUALIZOU]);
+GO
+
+-- Creating foreign key on [PREFERENCIA_USUARIO] in table 'TB_PREFERENCIA'
+ALTER TABLE [dbo].[TB_PREFERENCIA]
+ADD CONSTRAINT [FK_TB_PREFERENCIA_TB_USUARIO]
+    FOREIGN KEY ([PREFERENCIA_USUARIO])
+    REFERENCES [dbo].[TB_USUARIO]
+        ([USUARIO_ID])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_TB_PREFERENCIA_TB_USUARIO'
+CREATE INDEX [IX_FK_TB_PREFERENCIA_TB_USUARIO]
+ON [dbo].[TB_PREFERENCIA]
+    ([PREFERENCIA_USUARIO]);
+GO
+
+-- Creating foreign key on [USUARIO_PERFIL] in table 'TB_USUARIO'
+ALTER TABLE [dbo].[TB_USUARIO]
+ADD CONSTRAINT [FK_TB_USUARIO_TB_PERFIL]
+    FOREIGN KEY ([USUARIO_PERFIL])
+    REFERENCES [dbo].[TB_PERFIL]
+        ([PERFIL_ID])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_TB_USUARIO_TB_PERFIL'
+CREATE INDEX [IX_FK_TB_USUARIO_TB_PERFIL]
+ON [dbo].[TB_USUARIO]
+    ([USUARIO_PERFIL]);
+GO
+
+-- --------------------------------------------------
+-- Script has ended
+-- --------------------------------------------------
