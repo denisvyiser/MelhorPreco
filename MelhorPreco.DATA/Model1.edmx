@@ -1,0 +1,649 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="DB_MELHOR_PRECOModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="TB_ENDERECO">
+          <Key>
+            <PropertyRef Name="ENDERECO_CEP" />
+          </Key>
+          <Property Name="ENDERECO_CEP" Type="int" Nullable="false" />
+          <Property Name="ENDERECO_DESCRICAO" Type="nchar" MaxLength="150" />
+          <Property Name="ENDERECO_BAIRRO" Type="nchar" MaxLength="150" />
+          <Property Name="ENDERECO_CIDADE" Type="nchar" MaxLength="50" />
+          <Property Name="ENDERECO_ESTADO" Type="nchar" MaxLength="2" />
+        </EntityType>
+        <EntityType Name="TB_LISTA_COMPRAS">
+          <Key>
+            <PropertyRef Name="LISTA_ID" />
+          </Key>
+          <Property Name="LISTA_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="LISTA_USUARIO" Type="int" Nullable="false" />
+          <Property Name="LISTA_PRODUTO" Type="bigint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TB_LOJA">
+          <Key>
+            <PropertyRef Name="LOJA_ID" />
+          </Key>
+          <Property Name="LOJA_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="LOJA_NOME" Type="nchar" MaxLength="50" Nullable="false" />
+          <Property Name="LOJA_CNPJ" Type="nchar" MaxLength="14" />
+          <Property Name="LOJA_FONE" Type="nchar" MaxLength="10" />
+          <Property Name="LOJA_END_CEP" Type="int" Nullable="false" />
+          <Property Name="LOJA_END_NUMERO" Type="int" />
+          <Property Name="LOJA_END_COMPLEMENTO" Type="nchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="TB_PERFIL">
+          <Key>
+            <PropertyRef Name="PERFIL_ID" />
+          </Key>
+          <Property Name="PERFIL_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PERFIL_ROLE" Type="nchar" MaxLength="4" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TB_PRECO">
+          <Key>
+            <PropertyRef Name="PRECO_PRODUTO" />
+          </Key>
+          <Property Name="PRECO_PRODUTO" Type="bigint" Nullable="false" />
+          <Property Name="PRECO_LOJA" Type="int" Nullable="false" />
+          <Property Name="PRECO_VALOR" Type="decimal" Precision="10" Scale="2" Nullable="false" />
+          <Property Name="PRECO_ATUALIZACAO" Type="datetime" Nullable="false" />
+          <Property Name="PRECO_USUARIO_ATUALIZOU" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TB_PREFERENCIA">
+          <Key>
+            <PropertyRef Name="PREFERENCIA_ID" />
+          </Key>
+          <Property Name="PREFERENCIA_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PREFERENCIA_USUARIO" Type="int" Nullable="false" />
+          <Property Name="PREFERENCIA_LOJA" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TB_PRODUTO">
+          <Key>
+            <PropertyRef Name="PRODUTO_EAN" />
+          </Key>
+          <Property Name="PRODUTO_EAN" Type="bigint" Nullable="false" />
+          <Property Name="PRODUTO_DESCRICAO" Type="nchar" MaxLength="50" Nullable="false" />
+          <Property Name="PRODUTO_IMAGEM" Type="bigint" />
+          <Property Name="PRODUTO_CATEGORIA" Type="nchar" MaxLength="50" />
+          <Property Name="PRODUTO_SUBCATEGORIA" Type="nchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="TB_USUARIO">
+          <Key>
+            <PropertyRef Name="USUARIO_ID" />
+          </Key>
+          <Property Name="USUARIO_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="USUARIO_NOME" Type="nchar" MaxLength="50" Nullable="false" />
+          <Property Name="USUARIO_EMAIL" Type="nchar" MaxLength="51" Nullable="false" />
+          <Property Name="USUARIO_SENHA" Type="nchar" MaxLength="10" Nullable="false" />
+          <Property Name="USUARIO_FONE" Type="nchar" MaxLength="10" />
+          <Property Name="USUARIO_CEL" Type="nchar" MaxLength="11" />
+          <Property Name="USUARIO_END_CEP" Type="int" Nullable="false" />
+          <Property Name="USUARIO_END_NUMERO" Type="int" />
+          <Property Name="USUARIO_END_COMPLEMENTO" Type="nchar" MaxLength="50" />
+          <Property Name="USUARIO_PERFIL" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_TB_LISTA_COMPRAS_TB_PRODUTO">
+          <End Role="TB_PRODUTO" Type="Self.TB_PRODUTO" Multiplicity="1" />
+          <End Role="TB_LISTA_COMPRAS" Type="Self.TB_LISTA_COMPRAS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TB_PRODUTO">
+              <PropertyRef Name="PRODUTO_EAN" />
+            </Principal>
+            <Dependent Role="TB_LISTA_COMPRAS">
+              <PropertyRef Name="LISTA_PRODUTO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TB_LISTA_COMPRAS_TB_USUARIO">
+          <End Role="TB_USUARIO" Type="Self.TB_USUARIO" Multiplicity="1" />
+          <End Role="TB_LISTA_COMPRAS" Type="Self.TB_LISTA_COMPRAS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TB_USUARIO">
+              <PropertyRef Name="USUARIO_ID" />
+            </Principal>
+            <Dependent Role="TB_LISTA_COMPRAS">
+              <PropertyRef Name="LISTA_USUARIO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TB_LOJA_TB_ENDERECO">
+          <End Role="TB_ENDERECO" Type="Self.TB_ENDERECO" Multiplicity="1" />
+          <End Role="TB_LOJA" Type="Self.TB_LOJA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TB_ENDERECO">
+              <PropertyRef Name="ENDERECO_CEP" />
+            </Principal>
+            <Dependent Role="TB_LOJA">
+              <PropertyRef Name="LOJA_END_CEP" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TB_PRECO_PRODUTO">
+          <End Role="TB_PRODUTO" Type="Self.TB_PRODUTO" Multiplicity="1" />
+          <End Role="TB_PRECO" Type="Self.TB_PRECO" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="TB_PRODUTO">
+              <PropertyRef Name="PRODUTO_EAN" />
+            </Principal>
+            <Dependent Role="TB_PRECO">
+              <PropertyRef Name="PRECO_PRODUTO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TB_PRECO_TB_LOJA">
+          <End Role="TB_LOJA" Type="Self.TB_LOJA" Multiplicity="1" />
+          <End Role="TB_PRECO" Type="Self.TB_PRECO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TB_LOJA">
+              <PropertyRef Name="LOJA_ID" />
+            </Principal>
+            <Dependent Role="TB_PRECO">
+              <PropertyRef Name="PRECO_LOJA" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TB_PRECO_TB_USUARIO">
+          <End Role="TB_USUARIO" Type="Self.TB_USUARIO" Multiplicity="1" />
+          <End Role="TB_PRECO" Type="Self.TB_PRECO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TB_USUARIO">
+              <PropertyRef Name="USUARIO_ID" />
+            </Principal>
+            <Dependent Role="TB_PRECO">
+              <PropertyRef Name="PRECO_USUARIO_ATUALIZOU" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TB_PREFERENCIA_TB_LOJA">
+          <End Role="TB_LOJA" Type="Self.TB_LOJA" Multiplicity="1" />
+          <End Role="TB_PREFERENCIA" Type="Self.TB_PREFERENCIA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TB_LOJA">
+              <PropertyRef Name="LOJA_ID" />
+            </Principal>
+            <Dependent Role="TB_PREFERENCIA">
+              <PropertyRef Name="PREFERENCIA_LOJA" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TB_PREFERENCIA_TB_USUARIO">
+          <End Role="TB_USUARIO" Type="Self.TB_USUARIO" Multiplicity="1" />
+          <End Role="TB_PREFERENCIA" Type="Self.TB_PREFERENCIA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TB_USUARIO">
+              <PropertyRef Name="USUARIO_ID" />
+            </Principal>
+            <Dependent Role="TB_PREFERENCIA">
+              <PropertyRef Name="PREFERENCIA_USUARIO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TB_USUARIO_TB_ENDERECO">
+          <End Role="TB_ENDERECO" Type="Self.TB_ENDERECO" Multiplicity="1" />
+          <End Role="TB_USUARIO" Type="Self.TB_USUARIO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TB_ENDERECO">
+              <PropertyRef Name="ENDERECO_CEP" />
+            </Principal>
+            <Dependent Role="TB_USUARIO">
+              <PropertyRef Name="USUARIO_END_CEP" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TB_USUARIO_TB_PERFIL">
+          <End Role="TB_PERFIL" Type="Self.TB_PERFIL" Multiplicity="1" />
+          <End Role="TB_USUARIO" Type="Self.TB_USUARIO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TB_PERFIL">
+              <PropertyRef Name="PERFIL_ID" />
+            </Principal>
+            <Dependent Role="TB_USUARIO">
+              <PropertyRef Name="USUARIO_PERFIL" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="DB_MELHOR_PRECOModelStoreContainer">
+          <EntitySet Name="TB_ENDERECO" EntityType="Self.TB_ENDERECO" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TB_LISTA_COMPRAS" EntityType="Self.TB_LISTA_COMPRAS" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TB_LOJA" EntityType="Self.TB_LOJA" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TB_PERFIL" EntityType="Self.TB_PERFIL" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TB_PRECO" EntityType="Self.TB_PRECO" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TB_PREFERENCIA" EntityType="Self.TB_PREFERENCIA" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TB_PRODUTO" EntityType="Self.TB_PRODUTO" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TB_USUARIO" EntityType="Self.TB_USUARIO" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_TB_LISTA_COMPRAS_TB_PRODUTO" Association="Self.FK_TB_LISTA_COMPRAS_TB_PRODUTO">
+            <End Role="TB_PRODUTO" EntitySet="TB_PRODUTO" />
+            <End Role="TB_LISTA_COMPRAS" EntitySet="TB_LISTA_COMPRAS" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TB_LISTA_COMPRAS_TB_USUARIO" Association="Self.FK_TB_LISTA_COMPRAS_TB_USUARIO">
+            <End Role="TB_USUARIO" EntitySet="TB_USUARIO" />
+            <End Role="TB_LISTA_COMPRAS" EntitySet="TB_LISTA_COMPRAS" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TB_LOJA_TB_ENDERECO" Association="Self.FK_TB_LOJA_TB_ENDERECO">
+            <End Role="TB_ENDERECO" EntitySet="TB_ENDERECO" />
+            <End Role="TB_LOJA" EntitySet="TB_LOJA" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TB_PRECO_PRODUTO" Association="Self.FK_TB_PRECO_PRODUTO">
+            <End Role="TB_PRODUTO" EntitySet="TB_PRODUTO" />
+            <End Role="TB_PRECO" EntitySet="TB_PRECO" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TB_PRECO_TB_LOJA" Association="Self.FK_TB_PRECO_TB_LOJA">
+            <End Role="TB_LOJA" EntitySet="TB_LOJA" />
+            <End Role="TB_PRECO" EntitySet="TB_PRECO" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TB_PRECO_TB_USUARIO" Association="Self.FK_TB_PRECO_TB_USUARIO">
+            <End Role="TB_USUARIO" EntitySet="TB_USUARIO" />
+            <End Role="TB_PRECO" EntitySet="TB_PRECO" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TB_PREFERENCIA_TB_LOJA" Association="Self.FK_TB_PREFERENCIA_TB_LOJA">
+            <End Role="TB_LOJA" EntitySet="TB_LOJA" />
+            <End Role="TB_PREFERENCIA" EntitySet="TB_PREFERENCIA" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TB_PREFERENCIA_TB_USUARIO" Association="Self.FK_TB_PREFERENCIA_TB_USUARIO">
+            <End Role="TB_USUARIO" EntitySet="TB_USUARIO" />
+            <End Role="TB_PREFERENCIA" EntitySet="TB_PREFERENCIA" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TB_USUARIO_TB_ENDERECO" Association="Self.FK_TB_USUARIO_TB_ENDERECO">
+            <End Role="TB_ENDERECO" EntitySet="TB_ENDERECO" />
+            <End Role="TB_USUARIO" EntitySet="TB_USUARIO" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TB_USUARIO_TB_PERFIL" Association="Self.FK_TB_USUARIO_TB_PERFIL">
+            <End Role="TB_PERFIL" EntitySet="TB_PERFIL" />
+            <End Role="TB_USUARIO" EntitySet="TB_USUARIO" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="DB_MELHOR_PRECOModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="TB_ENDERECO">
+          <Key>
+            <PropertyRef Name="ENDERECO_CEP" />
+          </Key>
+          <Property Name="ENDERECO_CEP" Type="Int32" Nullable="false" />
+          <Property Name="ENDERECO_DESCRICAO" Type="String" MaxLength="150" FixedLength="true" Unicode="true" />
+          <Property Name="ENDERECO_BAIRRO" Type="String" MaxLength="150" FixedLength="true" Unicode="true" />
+          <Property Name="ENDERECO_CIDADE" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
+          <Property Name="ENDERECO_ESTADO" Type="String" MaxLength="2" FixedLength="true" Unicode="true" />
+          <NavigationProperty Name="TB_LOJA" Relationship="Self.FK_TB_LOJA_TB_ENDERECO" FromRole="TB_ENDERECO" ToRole="TB_LOJA" />
+          <NavigationProperty Name="TB_USUARIO" Relationship="Self.FK_TB_USUARIO_TB_ENDERECO" FromRole="TB_ENDERECO" ToRole="TB_USUARIO" />
+        </EntityType>
+        <EntityType Name="TB_LISTA_COMPRAS">
+          <Key>
+            <PropertyRef Name="LISTA_ID" />
+          </Key>
+          <Property Name="LISTA_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="LISTA_USUARIO" Type="Int32" Nullable="false" />
+          <Property Name="LISTA_PRODUTO" Type="Int64" Nullable="false" />
+          <NavigationProperty Name="TB_PRODUTO" Relationship="Self.FK_TB_LISTA_COMPRAS_TB_PRODUTO" FromRole="TB_LISTA_COMPRAS" ToRole="TB_PRODUTO" />
+          <NavigationProperty Name="TB_USUARIO" Relationship="Self.FK_TB_LISTA_COMPRAS_TB_USUARIO" FromRole="TB_LISTA_COMPRAS" ToRole="TB_USUARIO" />
+        </EntityType>
+        <EntityType Name="TB_LOJA">
+          <Key>
+            <PropertyRef Name="LOJA_ID" />
+          </Key>
+          <Property Name="LOJA_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="LOJA_NOME" Type="String" MaxLength="50" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="LOJA_CNPJ" Type="String" MaxLength="14" FixedLength="true" Unicode="true" />
+          <Property Name="LOJA_FONE" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="LOJA_END_CEP" Type="Int32" Nullable="false" />
+          <Property Name="LOJA_END_NUMERO" Type="Int32" />
+          <Property Name="LOJA_END_COMPLEMENTO" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
+          <NavigationProperty Name="TB_ENDERECO" Relationship="Self.FK_TB_LOJA_TB_ENDERECO" FromRole="TB_LOJA" ToRole="TB_ENDERECO" />
+          <NavigationProperty Name="TB_PRECO" Relationship="Self.FK_TB_PRECO_TB_LOJA" FromRole="TB_LOJA" ToRole="TB_PRECO" />
+          <NavigationProperty Name="TB_PREFERENCIA" Relationship="Self.FK_TB_PREFERENCIA_TB_LOJA" FromRole="TB_LOJA" ToRole="TB_PREFERENCIA" />
+        </EntityType>
+        <EntityType Name="TB_PRECO">
+          <Key>
+            <PropertyRef Name="PRECO_PRODUTO" />
+          </Key>
+          <Property Name="PRECO_PRODUTO" Type="Int64" Nullable="false" />
+          <Property Name="PRECO_LOJA" Type="Int32" Nullable="false" />
+          <Property Name="PRECO_VALOR" Type="Decimal" Precision="10" Scale="2" Nullable="false" />
+          <Property Name="PRECO_ATUALIZACAO" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="PRECO_USUARIO_ATUALIZOU" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="TB_LOJA" Relationship="Self.FK_TB_PRECO_TB_LOJA" FromRole="TB_PRECO" ToRole="TB_LOJA" />
+          <NavigationProperty Name="TB_PRODUTO" Relationship="Self.FK_TB_PRECO_PRODUTO" FromRole="TB_PRECO" ToRole="TB_PRODUTO" />
+          <NavigationProperty Name="TB_USUARIO" Relationship="Self.FK_TB_PRECO_TB_USUARIO" FromRole="TB_PRECO" ToRole="TB_USUARIO" />
+        </EntityType>
+        <EntityType Name="TB_PREFERENCIA">
+          <Key>
+            <PropertyRef Name="PREFERENCIA_ID" />
+          </Key>
+          <Property Name="PREFERENCIA_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PREFERENCIA_USUARIO" Type="Int32" Nullable="false" />
+          <Property Name="PREFERENCIA_LOJA" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="TB_LOJA" Relationship="Self.FK_TB_PREFERENCIA_TB_LOJA" FromRole="TB_PREFERENCIA" ToRole="TB_LOJA" />
+          <NavigationProperty Name="TB_USUARIO" Relationship="Self.FK_TB_PREFERENCIA_TB_USUARIO" FromRole="TB_PREFERENCIA" ToRole="TB_USUARIO" />
+        </EntityType>
+        <EntityType Name="TB_PRODUTO">
+          <Key>
+            <PropertyRef Name="PRODUTO_EAN" />
+          </Key>
+          <Property Name="PRODUTO_EAN" Type="Int64" Nullable="false" />
+          <Property Name="PRODUTO_DESCRICAO" Type="String" MaxLength="50" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="PRODUTO_IMAGEM" Type="Int64" />
+          <Property Name="PRODUTO_CATEGORIA" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
+          <Property Name="PRODUTO_SUBCATEGORIA" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
+          <NavigationProperty Name="TB_LISTA_COMPRAS" Relationship="Self.FK_TB_LISTA_COMPRAS_TB_PRODUTO" FromRole="TB_PRODUTO" ToRole="TB_LISTA_COMPRAS" />
+          <NavigationProperty Name="TB_PRECO" Relationship="Self.FK_TB_PRECO_PRODUTO" FromRole="TB_PRODUTO" ToRole="TB_PRECO" />
+        </EntityType>
+        <EntityType Name="TB_USUARIO">
+          <Key>
+            <PropertyRef Name="USUARIO_ID" />
+          </Key>
+          <Property Name="USUARIO_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="USUARIO_NOME" Type="String" MaxLength="50" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="USUARIO_EMAIL" Type="String" MaxLength="51" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="USUARIO_SENHA" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="USUARIO_FONE" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="USUARIO_CEL" Type="String" MaxLength="11" FixedLength="true" Unicode="true" />
+          <Property Name="USUARIO_END_CEP" Type="Int32" Nullable="false" />
+          <Property Name="USUARIO_END_NUMERO" Type="Int32" />
+          <Property Name="USUARIO_END_COMPLEMENTO" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
+          <NavigationProperty Name="TB_ENDERECO" Relationship="Self.FK_TB_USUARIO_TB_ENDERECO" FromRole="TB_USUARIO" ToRole="TB_ENDERECO" />
+          <NavigationProperty Name="TB_LISTA_COMPRAS" Relationship="Self.FK_TB_LISTA_COMPRAS_TB_USUARIO" FromRole="TB_USUARIO" ToRole="TB_LISTA_COMPRAS" />
+          <NavigationProperty Name="TB_PRECO" Relationship="Self.FK_TB_PRECO_TB_USUARIO" FromRole="TB_USUARIO" ToRole="TB_PRECO" />
+          <NavigationProperty Name="TB_PREFERENCIA" Relationship="Self.FK_TB_PREFERENCIA_TB_USUARIO" FromRole="TB_USUARIO" ToRole="TB_PREFERENCIA" />
+          <Property Name="USUARIO_PERFIL" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="TB_PERFIL" Relationship="DB_MELHOR_PRECOModel.FK_TB_USUARIO_TB_PERFIL" FromRole="TB_USUARIO" ToRole="TB_PERFIL" />
+        </EntityType>
+        <Association Name="FK_TB_LOJA_TB_ENDERECO">
+          <End Role="TB_ENDERECO" Type="Self.TB_ENDERECO" Multiplicity="1" />
+          <End Role="TB_LOJA" Type="Self.TB_LOJA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TB_ENDERECO">
+              <PropertyRef Name="ENDERECO_CEP" />
+            </Principal>
+            <Dependent Role="TB_LOJA">
+              <PropertyRef Name="LOJA_END_CEP" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TB_USUARIO_TB_ENDERECO">
+          <End Role="TB_ENDERECO" Type="Self.TB_ENDERECO" Multiplicity="1" />
+          <End Role="TB_USUARIO" Type="Self.TB_USUARIO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TB_ENDERECO">
+              <PropertyRef Name="ENDERECO_CEP" />
+            </Principal>
+            <Dependent Role="TB_USUARIO">
+              <PropertyRef Name="USUARIO_END_CEP" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TB_LISTA_COMPRAS_TB_PRODUTO">
+          <End Role="TB_PRODUTO" Type="Self.TB_PRODUTO" Multiplicity="1" />
+          <End Role="TB_LISTA_COMPRAS" Type="Self.TB_LISTA_COMPRAS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TB_PRODUTO">
+              <PropertyRef Name="PRODUTO_EAN" />
+            </Principal>
+            <Dependent Role="TB_LISTA_COMPRAS">
+              <PropertyRef Name="LISTA_PRODUTO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TB_LISTA_COMPRAS_TB_USUARIO">
+          <End Role="TB_USUARIO" Type="Self.TB_USUARIO" Multiplicity="1" />
+          <End Role="TB_LISTA_COMPRAS" Type="Self.TB_LISTA_COMPRAS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TB_USUARIO">
+              <PropertyRef Name="USUARIO_ID" />
+            </Principal>
+            <Dependent Role="TB_LISTA_COMPRAS">
+              <PropertyRef Name="LISTA_USUARIO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TB_PRECO_TB_LOJA">
+          <End Role="TB_LOJA" Type="Self.TB_LOJA" Multiplicity="1" />
+          <End Role="TB_PRECO" Type="Self.TB_PRECO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TB_LOJA">
+              <PropertyRef Name="LOJA_ID" />
+            </Principal>
+            <Dependent Role="TB_PRECO">
+              <PropertyRef Name="PRECO_LOJA" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TB_PREFERENCIA_TB_LOJA">
+          <End Role="TB_LOJA" Type="Self.TB_LOJA" Multiplicity="1" />
+          <End Role="TB_PREFERENCIA" Type="Self.TB_PREFERENCIA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TB_LOJA">
+              <PropertyRef Name="LOJA_ID" />
+            </Principal>
+            <Dependent Role="TB_PREFERENCIA">
+              <PropertyRef Name="PREFERENCIA_LOJA" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TB_PRECO_PRODUTO">
+          <End Role="TB_PRODUTO" Type="Self.TB_PRODUTO" Multiplicity="1" />
+          <End Role="TB_PRECO" Type="Self.TB_PRECO" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="TB_PRODUTO">
+              <PropertyRef Name="PRODUTO_EAN" />
+            </Principal>
+            <Dependent Role="TB_PRECO">
+              <PropertyRef Name="PRECO_PRODUTO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TB_PRECO_TB_USUARIO">
+          <End Role="TB_USUARIO" Type="Self.TB_USUARIO" Multiplicity="1" />
+          <End Role="TB_PRECO" Type="Self.TB_PRECO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TB_USUARIO">
+              <PropertyRef Name="USUARIO_ID" />
+            </Principal>
+            <Dependent Role="TB_PRECO">
+              <PropertyRef Name="PRECO_USUARIO_ATUALIZOU" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TB_PREFERENCIA_TB_USUARIO">
+          <End Role="TB_USUARIO" Type="Self.TB_USUARIO" Multiplicity="1" />
+          <End Role="TB_PREFERENCIA" Type="Self.TB_PREFERENCIA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TB_USUARIO">
+              <PropertyRef Name="USUARIO_ID" />
+            </Principal>
+            <Dependent Role="TB_PREFERENCIA">
+              <PropertyRef Name="PREFERENCIA_USUARIO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Entities" annotation:LazyLoadingEnabled="false">
+          <EntitySet Name="TB_ENDERECO" EntityType="Self.TB_ENDERECO" />
+          <EntitySet Name="TB_LISTA_COMPRAS" EntityType="Self.TB_LISTA_COMPRAS" />
+          <EntitySet Name="TB_LOJA" EntityType="Self.TB_LOJA" />
+          <EntitySet Name="TB_PRECO" EntityType="Self.TB_PRECO" />
+          <EntitySet Name="TB_PREFERENCIA" EntityType="Self.TB_PREFERENCIA" />
+          <EntitySet Name="TB_PRODUTO" EntityType="Self.TB_PRODUTO" />
+          <EntitySet Name="TB_USUARIO" EntityType="Self.TB_USUARIO" />
+          <AssociationSet Name="FK_TB_LOJA_TB_ENDERECO" Association="Self.FK_TB_LOJA_TB_ENDERECO">
+            <End Role="TB_ENDERECO" EntitySet="TB_ENDERECO" />
+            <End Role="TB_LOJA" EntitySet="TB_LOJA" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TB_USUARIO_TB_ENDERECO" Association="Self.FK_TB_USUARIO_TB_ENDERECO">
+            <End Role="TB_ENDERECO" EntitySet="TB_ENDERECO" />
+            <End Role="TB_USUARIO" EntitySet="TB_USUARIO" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TB_LISTA_COMPRAS_TB_PRODUTO" Association="Self.FK_TB_LISTA_COMPRAS_TB_PRODUTO">
+            <End Role="TB_PRODUTO" EntitySet="TB_PRODUTO" />
+            <End Role="TB_LISTA_COMPRAS" EntitySet="TB_LISTA_COMPRAS" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TB_LISTA_COMPRAS_TB_USUARIO" Association="Self.FK_TB_LISTA_COMPRAS_TB_USUARIO">
+            <End Role="TB_USUARIO" EntitySet="TB_USUARIO" />
+            <End Role="TB_LISTA_COMPRAS" EntitySet="TB_LISTA_COMPRAS" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TB_PRECO_TB_LOJA" Association="Self.FK_TB_PRECO_TB_LOJA">
+            <End Role="TB_LOJA" EntitySet="TB_LOJA" />
+            <End Role="TB_PRECO" EntitySet="TB_PRECO" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TB_PREFERENCIA_TB_LOJA" Association="Self.FK_TB_PREFERENCIA_TB_LOJA">
+            <End Role="TB_LOJA" EntitySet="TB_LOJA" />
+            <End Role="TB_PREFERENCIA" EntitySet="TB_PREFERENCIA" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TB_PRECO_PRODUTO" Association="Self.FK_TB_PRECO_PRODUTO">
+            <End Role="TB_PRODUTO" EntitySet="TB_PRODUTO" />
+            <End Role="TB_PRECO" EntitySet="TB_PRECO" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TB_PRECO_TB_USUARIO" Association="Self.FK_TB_PRECO_TB_USUARIO">
+            <End Role="TB_USUARIO" EntitySet="TB_USUARIO" />
+            <End Role="TB_PRECO" EntitySet="TB_PRECO" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TB_PREFERENCIA_TB_USUARIO" Association="Self.FK_TB_PREFERENCIA_TB_USUARIO">
+            <End Role="TB_USUARIO" EntitySet="TB_USUARIO" />
+            <End Role="TB_PREFERENCIA" EntitySet="TB_PREFERENCIA" />
+          </AssociationSet>
+          <EntitySet Name="TB_PERFIL" EntityType="DB_MELHOR_PRECOModel.TB_PERFIL" />
+          <AssociationSet Name="FK_TB_USUARIO_TB_PERFIL" Association="DB_MELHOR_PRECOModel.FK_TB_USUARIO_TB_PERFIL">
+            <End Role="TB_PERFIL" EntitySet="TB_PERFIL" />
+            <End Role="TB_USUARIO" EntitySet="TB_USUARIO" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="TB_PERFIL">
+          <Key>
+            <PropertyRef Name="PERFIL_ID" />
+          </Key>
+          <Property Name="PERFIL_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PERFIL_ROLE" Type="String" Nullable="false" MaxLength="4" FixedLength="true" Unicode="true" />
+          <NavigationProperty Name="TB_USUARIO" Relationship="DB_MELHOR_PRECOModel.FK_TB_USUARIO_TB_PERFIL" FromRole="TB_PERFIL" ToRole="TB_USUARIO" />
+        </EntityType>
+        <Association Name="FK_TB_USUARIO_TB_PERFIL">
+          <End Type="DB_MELHOR_PRECOModel.TB_PERFIL" Role="TB_PERFIL" Multiplicity="1" />
+          <End Type="DB_MELHOR_PRECOModel.TB_USUARIO" Role="TB_USUARIO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TB_PERFIL">
+              <PropertyRef Name="PERFIL_ID" />
+            </Principal>
+            <Dependent Role="TB_USUARIO">
+              <PropertyRef Name="USUARIO_PERFIL" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="DB_MELHOR_PRECOModelStoreContainer" CdmEntityContainer="Entities">
+          <EntitySetMapping Name="TB_ENDERECO">
+            <EntityTypeMapping TypeName="DB_MELHOR_PRECOModel.TB_ENDERECO">
+              <MappingFragment StoreEntitySet="TB_ENDERECO">
+                <ScalarProperty Name="ENDERECO_CEP" ColumnName="ENDERECO_CEP" />
+                <ScalarProperty Name="ENDERECO_DESCRICAO" ColumnName="ENDERECO_DESCRICAO" />
+                <ScalarProperty Name="ENDERECO_BAIRRO" ColumnName="ENDERECO_BAIRRO" />
+                <ScalarProperty Name="ENDERECO_CIDADE" ColumnName="ENDERECO_CIDADE" />
+                <ScalarProperty Name="ENDERECO_ESTADO" ColumnName="ENDERECO_ESTADO" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TB_LISTA_COMPRAS">
+            <EntityTypeMapping TypeName="DB_MELHOR_PRECOModel.TB_LISTA_COMPRAS">
+              <MappingFragment StoreEntitySet="TB_LISTA_COMPRAS">
+                <ScalarProperty Name="LISTA_ID" ColumnName="LISTA_ID" />
+                <ScalarProperty Name="LISTA_USUARIO" ColumnName="LISTA_USUARIO" />
+                <ScalarProperty Name="LISTA_PRODUTO" ColumnName="LISTA_PRODUTO" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TB_LOJA">
+            <EntityTypeMapping TypeName="DB_MELHOR_PRECOModel.TB_LOJA">
+              <MappingFragment StoreEntitySet="TB_LOJA">
+                <ScalarProperty Name="LOJA_ID" ColumnName="LOJA_ID" />
+                <ScalarProperty Name="LOJA_NOME" ColumnName="LOJA_NOME" />
+                <ScalarProperty Name="LOJA_CNPJ" ColumnName="LOJA_CNPJ" />
+                <ScalarProperty Name="LOJA_FONE" ColumnName="LOJA_FONE" />
+                <ScalarProperty Name="LOJA_END_CEP" ColumnName="LOJA_END_CEP" />
+                <ScalarProperty Name="LOJA_END_NUMERO" ColumnName="LOJA_END_NUMERO" />
+                <ScalarProperty Name="LOJA_END_COMPLEMENTO" ColumnName="LOJA_END_COMPLEMENTO" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TB_PRECO">
+            <EntityTypeMapping TypeName="DB_MELHOR_PRECOModel.TB_PRECO">
+              <MappingFragment StoreEntitySet="TB_PRECO">
+                <ScalarProperty Name="PRECO_PRODUTO" ColumnName="PRECO_PRODUTO" />
+                <ScalarProperty Name="PRECO_LOJA" ColumnName="PRECO_LOJA" />
+                <ScalarProperty Name="PRECO_VALOR" ColumnName="PRECO_VALOR" />
+                <ScalarProperty Name="PRECO_ATUALIZACAO" ColumnName="PRECO_ATUALIZACAO" />
+                <ScalarProperty Name="PRECO_USUARIO_ATUALIZOU" ColumnName="PRECO_USUARIO_ATUALIZOU" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TB_PREFERENCIA">
+            <EntityTypeMapping TypeName="DB_MELHOR_PRECOModel.TB_PREFERENCIA">
+              <MappingFragment StoreEntitySet="TB_PREFERENCIA">
+                <ScalarProperty Name="PREFERENCIA_ID" ColumnName="PREFERENCIA_ID" />
+                <ScalarProperty Name="PREFERENCIA_USUARIO" ColumnName="PREFERENCIA_USUARIO" />
+                <ScalarProperty Name="PREFERENCIA_LOJA" ColumnName="PREFERENCIA_LOJA" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TB_PRODUTO">
+            <EntityTypeMapping TypeName="DB_MELHOR_PRECOModel.TB_PRODUTO">
+              <MappingFragment StoreEntitySet="TB_PRODUTO">
+                <ScalarProperty Name="PRODUTO_EAN" ColumnName="PRODUTO_EAN" />
+                <ScalarProperty Name="PRODUTO_DESCRICAO" ColumnName="PRODUTO_DESCRICAO" />
+                <ScalarProperty Name="PRODUTO_IMAGEM" ColumnName="PRODUTO_IMAGEM" />
+                <ScalarProperty Name="PRODUTO_CATEGORIA" ColumnName="PRODUTO_CATEGORIA" />
+                <ScalarProperty Name="PRODUTO_SUBCATEGORIA" ColumnName="PRODUTO_SUBCATEGORIA" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TB_USUARIO">
+            <EntityTypeMapping TypeName="DB_MELHOR_PRECOModel.TB_USUARIO">
+              <MappingFragment StoreEntitySet="TB_USUARIO">
+                <ScalarProperty Name="USUARIO_PERFIL" ColumnName="USUARIO_PERFIL" />
+                <ScalarProperty Name="USUARIO_ID" ColumnName="USUARIO_ID" />
+                <ScalarProperty Name="USUARIO_NOME" ColumnName="USUARIO_NOME" />
+                <ScalarProperty Name="USUARIO_EMAIL" ColumnName="USUARIO_EMAIL" />
+                <ScalarProperty Name="USUARIO_SENHA" ColumnName="USUARIO_SENHA" />
+                <ScalarProperty Name="USUARIO_FONE" ColumnName="USUARIO_FONE" />
+                <ScalarProperty Name="USUARIO_CEL" ColumnName="USUARIO_CEL" />
+                <ScalarProperty Name="USUARIO_END_CEP" ColumnName="USUARIO_END_CEP" />
+                <ScalarProperty Name="USUARIO_END_NUMERO" ColumnName="USUARIO_END_NUMERO" />
+                <ScalarProperty Name="USUARIO_END_COMPLEMENTO" ColumnName="USUARIO_END_COMPLEMENTO" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TB_PERFIL">
+            <EntityTypeMapping TypeName="DB_MELHOR_PRECOModel.TB_PERFIL">
+              <MappingFragment StoreEntitySet="TB_PERFIL">
+                <ScalarProperty Name="PERFIL_ROLE" ColumnName="PERFIL_ROLE" />
+                <ScalarProperty Name="PERFIL_ID" ColumnName="PERFIL_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
