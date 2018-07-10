@@ -22,7 +22,7 @@ namespace MelhorPreco.Controllers
         {
             return new string[] { "value1", "value2" };
         }
-
+        
         // GET: api/Loja/5
         [Authorize(Roles = "user")]
         [Route("Consultar")]
